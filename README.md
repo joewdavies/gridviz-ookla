@@ -10,7 +10,7 @@ Using [GridTiler](https://github.com/eurostat/gridtiler) we will convert [ookla 
 ## Step 1: SHP to CSV
 First we must convert the ookla shapefiles to CSV.
 
-### Shapefiles:
+### Get shapefiles:
 
 URL Format: `https://ookla-open-data.s3.amazonaws.com/shapefiles/type=TYPE/year=YYYY/quarter=Q/FILENAME`
 
