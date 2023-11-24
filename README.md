@@ -36,9 +36,12 @@ avg_d_kbps,avg_u_kbps,avg_lat_ms,x,y
 
 ## Step 2: Tile CSV using GridTiler
 
-Once our data is in a grid.csv file, simply run `gridtiler -i grid.csv -r 350` (350 being the resolution, i.e. the size of each cell) in the folder where the grid.csv file is located to produce the tiled grid in a out/ folder.
+Install gridtiler:
 
-Final command: `gridtiler -i grid.csv -r 350`
+With Node.js version >=14
+Run `npm install gridtiler -g` (with sudo for Linux users)
+
+Once our data is in a grid.csv file, simply run `gridtiler -i grid.csv -r 350` (350 being the resolution, i.e. the size of each cell) in the folder where the grid.csv file is located to produce the tiled grid in a out/ folder.
 
 For multi-resolution gridded CSVs:
 
