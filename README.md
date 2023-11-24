@@ -4,6 +4,8 @@ Visualize ookla internet speed open data using gridviz
 
 Using [GridTiler](https://github.com/eurostat/gridtiler) we will convert [ookla open datasets](https://github.com/teamookla/ookla-open-data) into a tiled CSV format ready to be visualized using [gridviz](https://github.com/eurostat/gridviz).
 
+[demo](https://joewdavies.github.io/gridviz-ookla/viewer/)
+
 
 ## Step 1: SHP to CSV
 First we must convert the ookla shapefiles to CSV.
@@ -13,8 +15,8 @@ First we must convert the ookla shapefiles to CSV.
 URL Format: `https://ookla-open-data.s3.amazonaws.com/shapefiles/type=TYPE/year=YYYY/quarter=Q/FILENAME`
 
 You can get them from here:
-[https://ookla-open-data.s3.amazonaws.com/shapefiles/performance/type=mobile/year=2023/quarter=3/2023-07-01_performance_mobile_tiles.zip](https://ookla-open-data.s3.amazonaws.com/shapefiles/performance/type=mobile/year=2023/quarter=3/2023-07-01_performance_mobile_tiles.zip)
-[https://ookla-open-data.s3.amazonaws.com/shapefiles/performance/type=fixed/year=2023/quarter=3/2023-07-01_performance_fixed_tiles.zip](https://ookla-open-data.s3.amazonaws.com/shapefiles/performance/type=fixed/year=2023/quarter=3/2023-07-01_performance_fixed_tiles.zip)
+[Mobile](https://ookla-open-data.s3.amazonaws.com/shapefiles/performance/type=mobile/year=2023/quarter=3/2023-07-01_performance_mobile_tiles.zip)  
+[Fixed (broadband)](https://ookla-open-data.s3.amazonaws.com/shapefiles/performance/type=fixed/year=2023/quarter=3/2023-07-01_performance_fixed_tiles.zip)
 
 ### Convert to CSV using QGIS
 
