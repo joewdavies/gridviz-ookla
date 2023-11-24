@@ -19,7 +19,7 @@ You can get them from here:
 ### Convert to CSV using QGIS
 
 - Add shapefile to map
-- reproject to Robinson (EPSG: 54030)
+- Reproject to Robinson (EPSG: 54030) or whatever local projection you want if you are only using a section of the dataset.
 - Calculate new fields for x and y cell coordinates using `x_min( $geometry )` and `y_min( $geometry )` expressions.
 - Export > save features as > CSV
 - Export xmin ymin and data attributes (e.g. avg_d_kbps)
@@ -35,7 +35,6 @@ avg_d_kbps,avg_u_kbps,avg_lat_ms,x,y
 ```
 
 ## Step 2: Tile CSV using GridTiler
-Cell size in Robinson for ookla is 445.645 x, 351 y
 
 Once our data is in a grid.csv file, simply run `gridtiler -i grid.csv -r 350` (350 being the resolution, i.e. the size of each cell) in the folder where the grid.csv file is located to produce the tiled grid in a out/ folder.
 
