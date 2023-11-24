@@ -18,24 +18,57 @@
 
     <script>
       let containerDiv = document.getElementById("viz-container");
+      let colors = ["#040613","#292851","#3F4B96","#427BB7","#61A8C7","#9AD3DA","#EAFDFD"].reverse()
 
       new gviz.App(containerDiv)
         //set position and zoom
-        .setGeoCenter({ x:115, y:100 })
-        .setZoomFactor(10000)
+        .setZoomFactor(1000)
+        .setGeoCenter({ x: -524056, y: 6059510 })
+
         //add multi scale tiled layer
-        .addTiledGridLayer(
+        // .addTiledGridLayer(
+        //   //data URL
+        //   "../csv/out/",
+        //   //the styles
+        //   [
+        //     new gviz.ShapeColorSizeStyle({
+        //       color: () => "purple",
+        //       shape: () => "square",
+        //     }),
+        //   ],
+        //   {
+        //     pixNb: 1
+        //   }
+        // );
+
+        //single CSV
+        .addCSVGridLayer(
           //data URL
-          "../csv/out/",
-          //the styles
+          "../csv/grid.csv",
+          //resolution, in CRS unit (m)
+          350,
+          //the style
           [
-            new gviz.ShapeColorSizeStyle({
-              color: () => "purple",
-              shape: () => "square",
+            new gviz.SquareColorWGLStyle({
+              //the CSV column to show
+               colorCol: "avg_d_kbps",
+              // colors: colors,
+              //color: (t) => 'purple',
+              // stretching : {fun:'exp', alpha:1}
             }),
+            // new gviz.ShapeColorSizeStyle({
+            //   color: (cell) => "purple",
+            //   shape: () => "square",
+            // }),
           ],
           {
-            pixNb: 1
+            cellInfoHTML: (cell) => {
+              let html = "";
+              for (let field in cell) {
+                html += `${field}: ${cell[field]} <br>`;
+              }
+              return html;
+            },
           }
         );
     </script>
