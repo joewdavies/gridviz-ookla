@@ -1,2 +1,2 @@
-x,y,avg_d_kbps,avg_u_kbps,avg_lat_ms
-50,91,7,3,30232332
+x,y,avg_d_kbps,avg_u_kbps,avg_lat_ms,average
+50,91,7,3,30232332,7

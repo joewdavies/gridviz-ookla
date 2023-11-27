@@ -47,17 +47,23 @@ Once our data is in a grid.csv file, simply run `gridtiler -i grid.csv -r 350` (
 
 For multi-resolution gridded CSVs:
 
-`
-gridtiler -i grid.csv -r 350 -a 1 -o 350m/
-gridtiler -i grid.csv -r 350 -a 2 -o 700m/
-gridtiler -i grid.csv -r 350 -a 5 -o 1750m/
-gridtiler -i grid.csv -r 350 -a 10 -o 3500m/
-gridtiler -i grid.csv -r 350 -a 20 -o 7000m/
-gridtiler -i grid.csv -r 350 -a 50 -o 17500m/
-gridtiler -i grid.csv -r 350 -a 100 -o 35000m/
-`
+```
+    gridtiler -i grid.csv -r 350 -a 1 -o 350m/ --preFunction "c.nb=1" --postFunction "c.average = c.avg_d_kbps/c.nb; delete c.nb"
+    gridtiler -i grid.csv -r 350 -a 2 -o 700m/ --preFunction "c.nb=1" --postFunction "c.average = c.avg_d_kbps/c.nb; delete c.nb"
+    gridtiler -i grid.csv -r 350 -a 5 -o 1750m/ --preFunction "c.nb=1" --postFunction "c.average = c.avg_d_kbps/c.nb; delete c.nb"
+    gridtiler -i grid.csv -r 350 -a 10 -o 3500m/ --preFunction "c.nb=1" --postFunction "c.average = c.avg_d_kbps/c.nb; delete c.nb"
+    gridtiler -i grid.csv -r 350 -a 20 -o 7000m/ --preFunction "c.nb=1" --postFunction "c.average = c.avg_d_kbps/c.nb; delete c.nb"
+    gridtiler -i grid.csv -r 350 -a 50 -o 17500m/ --preFunction "c.nb=1" --postFunction "c.average = c.avg_d_kbps/c.nb; delete c.nb"
+    gridtiler -i grid.csv -r 350 -a 100 -o 35000m/ --preFunction "c.nb=1" --postFunction "c.average = c.avg_d_kbps/c.nb; delete c.nb"
+```
 
--a is the aggregation factor. Meaning that a value of -a 10 is 10 times the size of our original cell size.
+- -a is the aggregation factor. Meaning that a value of -a 10 is 10 times the size of our original cell size.
+
+- We use --preFunction to add a column (nb) used for counting how many cells in each aggregation cell. This is then used for calculating the averages in our postFunction.
+
+- We use --postFunction to alter the cell contents after aggregation. As we are using averages we must calculate the average of the cells in the aggregated cell.
+
+
 
 ## License
 
