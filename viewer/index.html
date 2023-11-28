@@ -2,8 +2,74 @@
 <html lang="en" style="height: 100%">
   <head>
     <meta name="viewport" content="maximum-scale=1.0, user-scalable=no" />
-    <title>Gridviz - example</title>
+    <title>Gridviz - Ookla</title>
     <script src="lib/gridviz.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/gridviz-eurostat@1.0.0"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-color@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-interpolate@3"></script>
+    <script src="https://cdn.jsdelivr.net/npm/d3-scale-chromatic@3"></script>
+    <script src="https://d3js.org/d3.v4.min.js"></script>
+
+    <style>
+      header {
+        min-height: 75px;
+      }
+      .wrapper {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      main {
+        max-height: 100vh;
+        height: calc(100vh - 110px);
+        flex: 1;
+      }
+      footer {
+        height: 28px;
+        display: flex;
+        justify-content: space-between;
+        box-shadow: white 0px 0px 5px 5px;
+      }
+      #gridviz-attribution {
+        width: auto;
+        height: 100%;
+        display: flex;
+        padding: 1px;
+        border: 0px;
+        background: #ffffffcc;
+      }
+      #gridviz-attribution > span {
+        align-self: center;
+      }
+      .wrapper {
+        height: 100vh;
+        display: flex;
+        flex-direction: column;
+      }
+      #gridviz-title {
+        margin-bottom: 0px;
+        margin-top: 0px;
+        font-size: 1.8rem;
+      }
+      #gridviz-title-container {
+        position: absolute;
+        top: 0px;
+        left: 0px;
+        padding: 15px;
+        width: 100%;
+        background-color: white;
+        box-shadow: white 0px 0px 5px 5px;
+      }
+
+      #gridviz-subtitle {
+        margin-bottom: 0px;
+        margin-top: 10px;
+        margin-bottom: 0px;
+        margin-top: 3px;
+        font-size: 14px;
+        font-weight: normal;
+      }
+    </style>
   </head>
 
   <body
@@ -14,35 +80,102 @@
       overflow: hidden;
     "
   >
-    <div id="viz-container" style="height: 100%; width: 100%"></div>
+    <div class="wrapper">
+      <header>
+        <div id="gridviz-title-container">
+          <h1 id="gridviz-title">Internet download speed (MB/s)</h1>
+          <h3 id="gridviz-subtitle">
+            Average fixed download speeds (Q2, 2023)
+          </h3>
+        </div>
+      </header>
+      <main>
+        <div id="viz-container" style="height: 90vh; width: 100%"></div>
+      </main>
+      <footer>
+        <div id="gridviz-attribution">
+          <span style="font-size: 0.8em; font-family: sans-serif">
+            Data:
+            <a
+              target="_blank"
+              href="https://github.com/teamookla/ookla-open-data/"
+              >Ookla open datasets</a
+            >
+            | Map made with
+            <a target="_blank" href="https://github.com/eurostat/gridviz"
+              >gridviz</a
+            >
+            | ©
+            <a target="_blank" href="https://eurogeographics.org"
+              >EuroGeographics</a
+            >
+            | ©
+            <a target="_blank" href="https://www.tuik.gov.tr">Turkstat</a>
+          </span>
+        </div>
+      </footer>
+    </div>
 
     <script>
       let containerDiv = document.getElementById("viz-container");
-      let colors = [
-        "#040613",
-        "#292851",
-        "#3F4B96",
-        "#427BB7",
-        "#61A8C7",
-        "#9AD3DA",
-        "#EAFDFD",
-      ].reverse();
 
-      new gviz.App(containerDiv)
+      //define color scheme
+      // let colors = ["#ffeb99", "#c7e9b4", "#7fcdbb", "#41b6c4", "#104f99", "#17256b"]
+      // const getDomain = (colors) => {
+      //   var domain = [0];
+      //   var increment = 2 / (colors.length - 1);
+      //   for (var i = 0; i < colors.length - 2; i++) {
+      //     var previous = domain[domain.length - 1];
+      //     domain.push(previous + increment);
+      //   }
+      //   domain.push(1);
+      //   return domain;
+      // };
+      // let sequentialESTAT = d3
+      //   .scaleLinear()
+      //   .domain(getDomain(colors))
+      //   .range(colors)
+      //   .interpolate(d3.interpolateRgb);
+
+      let app = new gviz.App(containerDiv)
         //set position and zoom
-        .setZoomFactor(1000)
-        .setGeoCenter({ x: -524056, y: 6059510 })
+        .setZoomFactor(4000)
+        .setGeoCenter({ x: 4235000, y: 2900000 })
 
-        //add multi scale tiled layer
+        // placenames & boundaries
+        .setLabelLayer(gviz_es.getEuronymeLabelLayer())
+        .setBoundaryLayer({
+          url: "./geojson/CNTBN_EU_EFTA_CC_XK.geojson",
+          color: (f, zf) => {
+            return "#888";
+          },
+          width: (f, zf) => {
+            if (f.properties.CNTR_CODE == "XK") return 0.5;
+            return 1.2;
+          },
+          lineDash: (f, zf) => {
+            const p = f.properties;
+            if (p.COAS_FLAG === "T") return [];
+            return [10 * zf, 3 * zf];
+          },
+        })
+
+        //buttons
+        .addZoomButtons()
+        .addFullscreenButton()
+
+        //   //add multi scale tiled layer
         .addMultiScaleTiledGridLayer(
           //array of resolutions, in CRS unit (m)
           [350, 700, 1750, 3500, 7000, 17500, 35000],
           //function which returns the URL for each resolution value
-          (r) => "../csv/" + r + "m/",
+          (r) => "../csv/europe/" + r + "m/",
           //the styles
           [
             new gviz.SquareColorWGLStyle({
-              colorCol: "avg_d_kbps",
+              colorCol: "MB/S",
+              color: d3.interpolateYlGnBu,
+              //stretching: {fun:'expRev', alpha:1}
             }),
           ],
           {
@@ -50,89 +183,37 @@
             pixNb: 5,
             preprocess: (c, r) => {
               //for each cell
-              if (!c.avg_d_kbps) {
-                c.avg_d_kbps = 0;
-              } else {
-                // c.avg_d_kbps = c.avg_d_kbps / r;
-              }
-              if (!c.avg_d_mbps) c.avg_d_mbps = Math.floor(c.avg_d_kbps / 1000);
+              if (c.devices < 3) return false; // omit cells that have less than 3 devices tested
+
+              if (!c.avg_d_kbps) c.avg_d_kbps = 0;
+
+              // 8 megabits in a megabyte
+              c["MB/S"] = Math.floor(c.avg_d_kbps / 1000 / 8);
             },
-                    
-          cellInfoHTML: (cell) => {
-            let html = "";
-            // for (let field in cell) {
-            //   html += `${field}: ${cell[field]} <br>`;
-            // }
-            html += `Average download speed: ${cell.avg_d_mbps} MB/S`
-            return html;
-          },
+
+            cellInfoHTML: (cell) => {
+              let html = "";
+              // for (let field in cell) {
+              //   html += `${field}: ${cell[field]} <br>`;
+              // }
+              html += `Average download speed: <strong>${cell["MB/S"]} MB/S</strong>`;
+              html += `<br>Tests: ${cell.tests}`;
+              html += `<br>Devices: ${cell.devices}`;
+              return html;
+            },
           }
         );
 
-      //add tiled layer
-      // .addTiledGridLayer(
-      //   //data URL
-      //   "../csv/out/",
-      //   //the styles
-      //   [
-      //     new gviz.ShapeColorSizeStyle({
-      //       color: () => "purple",
-      //       shape: () => "square",
-      //     }),
-      //   ],
-      //   {
-      //     cellInfoHTML: (cell) => {
-      //       let html = "";
-      //       // for (let field in cell) {
-      //       //   html += `${field}: ${cell[field]} <br>`;
-      //       // }
-      //       html += `Average download speed: ${cell.avg_d_mbps} MB/S`
-      //       return html;
-      //     },
-      //     preprocess: (c) => {
-      //         //for each cell
-      //         if (!c.avg_d_kbps) c.avg_d_kbps = 0
-      //         if (!c.avg_d_mbps) c.avg_d_mbps = Math.floor(c.avg_d_kbps / 1000)
-      //     },
-      //   }
-      // );
-
-      //single CSV
-      // .addCSVGridLayer(
-      //   //data URL
-      //   "../csv/grid.csv",
-      //   //resolution, in CRS unit (m)
-      //   350,
-      //   //the style
-      //   [
-      //     new gviz.SquareColorWGLStyle({
-      //       //the CSV column to show
-      //        colorCol: "avg_d_kbps",
-      //       // colors: colors,
-      //       // color: (t) => 'purple',
-      //       // stretching : {fun:'exp', alpha:1}
-      //     }),
-      //     // new gviz.ShapeColorSizeStyle({
-      //     //   color: (cell) => "purple",
-      //     //   shape: () => "square",
-      //     // }),
-      //   ],
-      //   {
-      //     cellInfoHTML: (cell) => {
-      //       let html = "";
-      //       // for (let field in cell) {
-      //       //   html += `${field}: ${cell[field]} <br>`;
-      //       // }
-      //       html += `Average download speed: ${cell.avg_d_mbps} MB/S`
-      //       return html;
-      //     },
-      //     preprocess: (c) => {
-      //         //for each cell
-      //         if (!c.avg_d_kbps) c.avg_d_kbps = 0
-      //         if (!c.avg_d_mbps) c.avg_d_mbps = Math.floor(c.avg_d_kbps / 1000)
-      //     },
-      //   }
-      // );
+      // add legend
+      app.layers[0].styles[0].legends.push(
+        new gviz.ColorLegend({
+          title: "Average download speed (MB/s)",
+          width: 400,
+          ticks: 5,
+          colorRamp: d3.interpolateYlGnBu,
+          fun: (t, r, s) => s.max * gviz.sExpRev(t, -7),
+        })
+      );
     </script>
   </body>
 </html>

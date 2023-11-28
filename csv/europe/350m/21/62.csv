@@ -1,0 +1,3 @@
+x,y,avg_d_kbps,avg_u_kbps,avg_lat_ms,tests,devices
+80,27,21204,2596,67,2,1
+81,27,7509,7778,15,1,1
