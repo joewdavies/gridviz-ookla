@@ -4,8 +4,7 @@ Visualize Ookla internet speed open data using gridviz
 
 Using [GridTiler](https://github.com/eurostat/gridtiler) we will convert [ookla open datasets](https://github.com/teamookla/ookla-open-data) into a tiled CSV format ready to be visualized using [gridviz](https://github.com/eurostat/gridviz).
 
-
-<img src="./preview.png" href="https://joewdavies.github.io/gridviz-ookla/viewer/"></img>
+<a  href="https://joewdavies.github.io/gridviz-ookla/viewer/" target="_blank"><img src="./preview.png"></img></a>
 
 [Live demo](https://joewdavies.github.io/gridviz-ookla/viewer/)
 
