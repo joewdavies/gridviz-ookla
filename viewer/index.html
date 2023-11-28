@@ -29,6 +29,7 @@
         display: flex;
         justify-content: space-between;
         box-shadow: white 0px 0px 5px 5px;
+        background: linear-gradient(90deg,#082b7a,#0e47cb);
       }
       #gridviz-attribution {
         width: auto;
@@ -36,7 +37,12 @@
         display: flex;
         padding: 1px;
         border: 0px;
-        background: #ffffffcc;
+      }
+      #gridviz-attribution > span > a {
+        color:white
+      }
+      #gridviz-attribution > span > a:hover {
+        color:#b2b5ff
       }
       #gridviz-attribution > span {
         align-self: center;
@@ -49,7 +55,7 @@
       #gridviz-title {
         margin-bottom: 0px;
         margin-top: 0px;
-        font-size: 1.8rem;
+        font-size: 1.5rem;
       }
       #gridviz-title-container {
         position: absolute;
@@ -57,7 +63,8 @@
         left: 0px;
         padding: 15px;
         width: 100%;
-        background-color: white;
+        color:white;
+        background: linear-gradient(90deg,#082b7a,#0e47cb);
         box-shadow: white 0px 0px 5px 5px;
       }
 
